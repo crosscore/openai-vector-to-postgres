@@ -1,5 +1,5 @@
 services:
-  app:
+  vectorizer_app:
     build: .
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
@@ -15,7 +15,7 @@ services:
     ports:
       - "8001:8002"
 
-  db:
+  postgresql_db:
     image: postgres:13
     environment:
       - POSTGRES_DB=${DATABASE_NAME}
