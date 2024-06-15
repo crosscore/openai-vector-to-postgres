@@ -9,7 +9,7 @@ services:
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
       - DATABASE_PORT=5432
     depends_on:
-      - db
+      - postgresql_db
     volumes:
       - .:/app
     ports:
