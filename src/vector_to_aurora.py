@@ -36,9 +36,13 @@ conn.commit()
 
 input_directory = '../data/csv/'
 csv_files = glob.glob(os.path.join(input_directory, '*.csv'))
+print(csv_files)
 
 def get_embedding(text):
-    return embeddings.embed_query(text)
+    embedding = embeddings.embed_query(text)
+    print("Embedding for text:", text, "is", embedding)
+    return embedding
+
 
 # 全CSVファイルに対してベクトル化の処理を実行
 for input_file_path in csv_files:
@@ -49,11 +53,13 @@ for input_file_path in csv_files:
 
     # ベクトルデータをPostgreSQLに挿入
     for index, row in df.iterrows():
+        print("Inserting row:", row)
         insert_query = """
         INSERT INTO toc_embeddings (file_name, toc, page, toc_vector)
         VALUES (%s, %s, %s, %s);
         """
         cursor.execute(insert_query, (row['file_name'], row['toc'], row['page'], row['toc(vector)']))
+        print("Row inserted")
 
     conn.commit()
 
