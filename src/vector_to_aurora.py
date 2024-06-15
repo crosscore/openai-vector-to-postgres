@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 import glob
-from langchain.embeddings import OpenAIEmbeddings
+from langchain_openai import OpenAIEmbeddings
 from dotenv import load_dotenv
 import psycopg2
 
@@ -13,19 +13,17 @@ embeddings = OpenAIEmbeddings(
     openai_api_key=OPENAI_API_KEY
 )
 
-# PostgreSQLデータベースに接続
 conn = psycopg2.connect(
-    dbname=os.getenv("POSTGRES_DB"),
-    user=os.getenv("POSTGRES_USER"),
-    password=os.getenv("POSTGRES_PASSWORD"),
-    host=os.getenv("POSTGRES_HOST"),
-    port=os.getenv("POSTGRES_PORT")
+    dbname=os.getenv("DATABASE_NAME"),
+    user=os.getenv("DATABASE_USER"),
+    password=os.getenv("DATABASE_PASSWORD"),
+    host=os.getenv("DATABASE_HOST"),
+    port=os.getenv("DATABASE_PORT")
 )
 cursor = conn.cursor()
 
-# テーブル作成クエリ
 create_table_query = """
-CREATE TABLE IF NOT EXISTS mammal_embeddings (
+CREATE TABLE IF NOT EXISTS toc_embeddings (
     id SERIAL PRIMARY KEY,
     file_name TEXT,
     toc TEXT,
@@ -52,7 +50,7 @@ for input_file_path in csv_files:
     # ベクトルデータをPostgreSQLに挿入
     for index, row in df.iterrows():
         insert_query = """
-        INSERT INTO mammal_embeddings (file_name, toc, page, toc_vector)
+        INSERT INTO toc_embeddings (file_name, toc, page, toc_vector)
         VALUES (%s, %s, %s, %s);
         """
         cursor.execute(insert_query, (row['file_name'], row['toc'], row['page'], row['toc(vector)']))

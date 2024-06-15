@@ -19,7 +19,6 @@ os.makedirs(output_directory, exist_ok=True)
 # 入力ディレクトリ内の全CSVファイルを取得
 csv_files = glob.glob(os.path.join(input_directory, '*.csv'))
 
-# toc列の値をembeddingに変換する関数
 def get_embedding(text):
     return embeddings.embed_query(text)
 
