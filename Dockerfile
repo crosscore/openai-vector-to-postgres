@@ -12,4 +12,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# CMD ["python", "vector_to_aurora.py"]
+# デフォルトコマンドを無限ループに設定
+#CMD ["sh", "-c", "while :; do sleep 2073600; done"]
+CMD ["tail", "-f", "/dev/null"]
